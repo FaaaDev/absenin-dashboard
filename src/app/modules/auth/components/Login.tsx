@@ -7,6 +7,7 @@ import {useFormik} from 'formik'
 import {getUserByToken, login} from '../core/_requests'
 import {toAbsoluteUrl} from '../../../../_metronic/helpers'
 import {useAuth} from '../core/Auth'
+import {endpoints, request} from '../../../../utils'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -21,8 +22,8 @@ const loginSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  email: 'admin@demo.com',
-  password: 'demo',
+  email: '',
+  password: '',
 }
 
 /*
@@ -35,23 +36,52 @@ export function Login() {
   const [loading, setLoading] = useState(false)
   const {saveAuth, setCurrentUser} = useAuth()
 
+  const login = async (username: any, password: any, onError: Function) => {
+    const config = {
+      ...endpoints.login,
+      data: {username, password},
+    }
+
+    let response: any = null
+    try {
+      response = await request(null, config)
+      if (response.status) {
+        const {data} = response
+        console.log(data.token)
+        localStorage.setItem('token', data.token)
+        // window.location.reload();
+      }
+    } catch (error: any) {
+      if (error.status === 403) {
+        onError()
+      } else {
+        alert('Gangguan Server')
+      }
+    }
+  }
+
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
     onSubmit: async (values, {setStatus, setSubmitting}) => {
       setLoading(true)
-      try {
-        const {data: auth} = await login(values.email, values.password)
-        saveAuth(auth)
-        const {data: user} = await getUserByToken(auth.api_token)
-        setCurrentUser(user)
-      } catch (error) {
-        console.error(error)
-        saveAuth(undefined)
+      login(values.email, values.password, () => {
         setStatus('The login detail is incorrect')
         setSubmitting(false)
         setLoading(false)
-      }
+      })
+      // try {
+      // const {data: auth} = await login(values.email, values.password)
+      // saveAuth(auth)
+      // const {data: user} = await getUserByToken(auth.api_token)
+      // setCurrentUser(user)
+      // } catch (error) {
+      //   console.error(error)
+      //   saveAuth(undefined)
+      //   setStatus('The login detail is incorrect')
+      //   setSubmitting(false)
+      //   setLoading(false)
+      // }
     },
   })
 
@@ -79,12 +109,7 @@ export function Login() {
           <div className='alert-text font-weight-bold'>{formik.status}</div>
         </div>
       ) : (
-        <div className='mb-10 bg-light-info p-8 rounded'>
-          <div className='text-info'>
-            Use account <strong>admin@demo.com</strong> and password <strong>demo</strong> to
-            continue.
-          </div>
-        </div>
+        <></>
       )}
 
       {/* begin::Form group */}

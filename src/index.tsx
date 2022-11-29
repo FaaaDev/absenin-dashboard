@@ -39,13 +39,14 @@ Chart.register(...registerables)
 const queryClient = new QueryClient()
 
 ReactDOM.render(
-  <QueryClientProvider client={queryClient}>
-    <MetronicI18nProvider>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </MetronicI18nProvider>
-    <ReactQueryDevtools initialIsOpen={false} />
-  </QueryClientProvider>,
+  // <QueryClientProvider client={queryClient}>
+
+  //   <ReactQueryDevtools initialIsOpen={false} />
+  // </QueryClientProvider>,
+  <MetronicI18nProvider>
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
+  </MetronicI18nProvider>,
   document.getElementById('root')
 )

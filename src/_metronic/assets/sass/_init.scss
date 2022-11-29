@@ -13,10 +13,17 @@
 @import './core/components/variables';
 
 // Bootstrap initializaton
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/utilities';
+// @import '~bootstrap/scss/functions';
+// @import '~bootstrap/scss/variables';
+// @import '~bootstrap/scss/mixins';
+// @import '~bootstrap/scss/utilities';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/maps"; // **Newly added!**
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/helpers";
+@import "~bootstrap/scss/utilities/api";
 
 // 3rd-Party plugins variables
 @import './core/vendors/plugins/variables';

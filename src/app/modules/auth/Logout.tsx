@@ -6,6 +6,7 @@ export function Logout() {
   const {logout} = useAuth()
   useEffect(() => {
     logout()
+    localStorage.removeItem("token");
     document.location.reload()
   }, [logout])
 

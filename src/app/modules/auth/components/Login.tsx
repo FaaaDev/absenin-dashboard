@@ -39,7 +39,7 @@ export function Login() {
   const login = async (username: any, password: any, onError: Function) => {
     const config = {
       ...endpoints.login,
-      data: {username, password},
+      data: {email:username, password:password},
     }
 
     let response: any = null
@@ -47,16 +47,17 @@ export function Login() {
       response = await request(null, config)
       if (response.status) {
         const {data} = response
-        console.log(data.token)
-        localStorage.setItem('token', data.token)
-        // window.location.reload();
+        if (data.user.officer) {
+          console.log(data.token)
+          localStorage.setItem('token', data.token)
+          setLoading(false)
+          window.location.reload();
+        } else {
+          onError(401)
+        }
       }
     } catch (error: any) {
-      if (error.status === 403) {
-        onError()
-      } else {
-        alert('Gangguan Server')
-      }
+      onError(error.status)
     }
   }
 
@@ -65,23 +66,22 @@ export function Login() {
     validationSchema: loginSchema,
     onSubmit: async (values, {setStatus, setSubmitting}) => {
       setLoading(true)
-      login(values.email, values.password, () => {
-        setStatus('The login detail is incorrect')
-        setSubmitting(false)
-        setLoading(false)
+      setStatus("")
+      login(values.email, values.password, (code:any) => {
+        if (code === 403) {
+          setStatus('The login detail is incorrect')
+          setSubmitting(false)
+          setLoading(false)
+        } else if (code === 401) {
+          setStatus('You have no access!')
+          setSubmitting(false)
+          setLoading(false)
+        } else {
+          setStatus('Problem on server, try again later!')
+          setSubmitting(false)
+          setLoading(false)
+        }        
       })
-      // try {
-      // const {data: auth} = await login(values.email, values.password)
-      // saveAuth(auth)
-      // const {data: user} = await getUserByToken(auth.api_token)
-      // setCurrentUser(user)
-      // } catch (error) {
-      //   console.error(error)
-      //   saveAuth(undefined)
-      //   setStatus('The login detail is incorrect')
-      //   setSubmitting(false)
-      //   setLoading(false)
-      // }
     },
   })
 
@@ -94,7 +94,7 @@ export function Login() {
     >
       {/* begin::Heading */}
       <div className='text-center mb-10'>
-        <h1 className='text-dark mb-3'>Sign In to Metronic</h1>
+        <h1 className='text-dark mb-3'>Sign In to Absenin</h1>
         <div className='text-gray-400 fw-bold fs-4'>
           New Here?{' '}
           <Link to='/auth/registration' className='link-primary fw-bolder'>

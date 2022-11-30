@@ -39,6 +39,7 @@
     flex-shrink: 0;
     display: inline-block;
     @include border-radius($border-radius);
+    object-fit: cover;
   }
 
   // Square

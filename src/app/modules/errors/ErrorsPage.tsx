@@ -15,8 +15,8 @@ const ErrorsLayout = () => {
           <a href='/dashboard' className='mb-10 pt-lg-20'>
             <img
               alt='Logo'
-              src={toAbsoluteUrl('/media/logos/logo-1.svg')}
-              className='h-50px mb-5'
+              src={toAbsoluteUrl('/media/logos/absenin-v1-long.png')}
+              className='h-75px mb-5'
             />
           </a>
           <div className='pt-lg-10 mb-10'>
@@ -45,13 +45,15 @@ const ErrorsLayout = () => {
 
         <div className='d-flex flex-center flex-column-auto p-10'>
           <div className='d-flex align-items-center fw-bold fs-6'>
-            <a href='https://keenthemes.com' className='text-muted text-hover-primary px-2'>
+            <a
+              href='https://itungin.id'
+              className='text-muted text-hover-primary px-2'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               About
             </a>
-            <a href='mailto:support@keenthemes.com' className='text-muted text-hover-primary px-2'>
-              Contact
-            </a>
-            <a href='https://1.envato.market/EA4JP' className='text-muted text-hover-primary px-2'>
+            <a href='mailto:info@itungin.id' className='text-muted text-hover-primary px-2'>
               Contact Us
             </a>
           </div>

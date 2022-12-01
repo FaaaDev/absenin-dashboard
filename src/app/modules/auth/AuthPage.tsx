@@ -25,7 +25,11 @@ const AuthLayout = () => {
       <div className='d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20'>
         {/* begin::Logo */}
         <a href='#' className='mb-12'>
-          <img alt='Logo' src={toAbsoluteUrl('/media/logos/absenin-v1-long.png')} className='h-75px' />
+          <img
+            alt='Logo'
+            src={toAbsoluteUrl('/media/logos/absenin-v1-long.png')}
+            className='h-75px'
+          />
         </a>
         {/* end::Logo */}
         {/* begin::Wrapper */}
@@ -38,15 +42,16 @@ const AuthLayout = () => {
       {/* begin::Footer */}
       <div className='d-flex flex-center flex-column-auto p-10'>
         <div className='d-flex align-items-center fw-bold fs-6'>
-          <a href='#' className='text-muted text-hover-primary px-2'>
+          <a
+            href='https://itungin.id'
+            className='text-muted text-hover-primary px-2'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
             About
           </a>
 
-          <a href='#' className='text-muted text-hover-primary px-2'>
-            Contact
-          </a>
-
-          <a href='#' className='text-muted text-hover-primary px-2'>
+          <a href='mailto:info@itungin.id' className='text-muted text-hover-primary px-2'>
             Contact Us
           </a>
         </div>

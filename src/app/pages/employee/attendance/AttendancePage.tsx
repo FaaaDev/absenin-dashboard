@@ -6,12 +6,24 @@ import {Column} from 'primereact/column'
 import {Skeleton} from 'primereact/skeleton'
 import {endpoints, request} from '../../../../utils'
 import {useDispatch, useSelector} from 'react-redux'
-import {SET_ATT} from '../../../../redux/actions'
+import {SET_ATT, SET_DETAIL_ATT} from '../../../../redux/actions'
 import {Button} from 'primereact/button'
 import {Menu} from 'primereact/menu'
+import {Dialog} from 'primereact/dialog'
+import {Timeline} from 'primereact/timeline'
+import {Link} from 'react-router-dom'
+import {FilterMatchMode} from 'primereact/api'
+import { Dropdown } from "primereact/dropdown";
 
 export default function AttendancePage() {
   const [loading, setLoading] = useState(false)
+  const [loadingDetail, setLoadingDetail] = useState(false)
+  const [globalFilter, setGlobalFilter] = useState('')
+  const [detailLocation, setDetailLocation]: any = useState(null)
+  const [displayDetail, setDisplayDetail] = useState(false)
+  const [filters, setFilters]: any = useState(null)
+  const [first2, setFirst2] = useState(0);
+  const [rows2, setRows2] = useState(20);
   const dispatch = useDispatch()
   const attendance: any = useSelector((state: any) => state.attendance)
   const dummy = Array.from({length: 10})
@@ -20,7 +32,9 @@ export default function AttendancePage() {
     {
       label: 'Detail',
       icon: 'pi pi-external-link',
-      command: () => {},
+      command: () => {
+        setDisplayDetail(true)
+      },
     },
     {
       label: 'Edit',
@@ -36,6 +50,7 @@ export default function AttendancePage() {
 
   useEffect(() => {
     getAttendance()
+    initFilter()
   }, [])
 
   const getAttendance = async () => {
@@ -59,6 +74,45 @@ export default function AttendancePage() {
     }, 500)
   }
 
+  const getAttendanceDetail = async (id: any) => {
+    setLoadingDetail(true)
+    console.log(id)
+
+    const config = {
+      ...endpoints.getAttendanceDetail,
+      endpoint: endpoints.getAttendanceDetail.endpoint + id,
+    }
+
+    let response: any = null
+    try {
+      response = await request(null, config)
+      console.log(response)
+      if (response.status) {
+        const {data} = response
+        setDetailLocation({...data.location_in, image: data.image_in})
+        dispatch({type: SET_DETAIL_ATT, payload: data})
+      }
+    } catch (error) {}
+    setTimeout(() => {
+      setLoadingDetail(false)
+    }, 500)
+  }
+
+  const onGlobalFilterChange = (e: any) => {
+    const value = e.target.value
+    let _filters1 = {...filters}
+    _filters1['global'].value = value
+
+    setFilters(_filters1)
+    setGlobalFilter(value)
+  }
+
+  const initFilter = () => {
+    setFilters({
+      global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    })
+  }
+
   const header = () => {
     return (
       <div className='card-header border-0 pt-6'>
@@ -73,55 +127,103 @@ export default function AttendancePage() {
               type='text'
               data-kt-user-table-filter='search'
               className='form-control form-control-solid w-250px ps-14'
-              placeholder='Search user'
-              value={''}
-              // onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder='Search Employee'
+              value={globalFilter}
+              onChange={onGlobalFilterChange}
             />
           </div>
           {/* end::Search */}
         </div>
-        {/* begin::Card toolbar */}
-        <div className='card-toolbar'>
-          {/* begin::Group actions */}
-          {/* {selected.length > 0 ? <UsersListGrouping /> : <UsersListToolbar />} */}
-          <div className='d-flex justify-content-end' data-kt-user-table-toolbar='base'>
-            {/* <UsersListFilter /> */}
-
-            {/* begin::Export */}
-            <button type='button' className='btn btn-light-primary me-3'>
-              <KTSVG path='/media/icons/duotune/arrows/arr078.svg' className='svg-icon-2' />
-              Export
-            </button>
-            {/* end::Export */}
-
-            {/* begin::Add user */}
-            <button type='button' className='btn btn-primary'>
-              <KTSVG path='/media/icons/duotune/arrows/arr075.svg' className='svg-icon-2' />
-              Add User
-            </button>
-            {/* end::Add user */}
-          </div>
-          {/* end::Group actions */}
-        </div>
-        {/* end::Card toolbar */}
       </div>
     )
   }
 
-  const actionBody = (e: any) => {
+  const actionBody = (data: any) => {
     return (
       <>
-        <Menu model={items} popup ref={menu} id='popup_menu' />
+        <Menu
+          model={[
+            {
+              label: 'Detail',
+              icon: 'pi pi-external-link',
+              command: () => {
+                setDisplayDetail(true)
+              },
+            },
+            {
+              label: 'Edit',
+              icon: 'pi pi-pencil',
+              command: () => {},
+            },
+            {
+              label: 'Delete',
+              icon: 'pi pi-trash',
+              command: () => {},
+            },
+          ]}
+          popup
+          ref={menu}
+          id='popup_menu'
+        />
         <Button
-          label='Action'
+          label={'Action'}
           icon='pi pi-angle-down'
           className='p-button-outlined p-button-plain p-button-sm'
           iconPos='right'
-          onClick={(event) => menu.current.toggle(event)}
+          onClick={(event) => {
+            getAttendanceDetail(data.id)
+            menu.current.toggle(event)
+          }}
         />
       </>
     )
   }
+
+  const template2 = {
+    layout: "RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink",
+    RowsPerPageDropdown: (options:any) => {
+      const dropdownOptions = [
+        { label: 20, value: 20 },
+        { label: 50, value: 50 },
+        { label: "Semua", value: options.totalRecords },
+      ];
+
+      return (
+        <React.Fragment>
+          <span
+            className="mx-1"
+            style={{ color: "var(--text-color)", userSelect: "none" }}
+          >
+            Data per halaman:{" "}
+          </span>
+          <Dropdown
+            value={options.value}
+            options={dropdownOptions}
+            onChange={options.onChange}
+          />
+        </React.Fragment>
+      );
+    },
+    CurrentPageReport: (options:any) => {
+      return (
+        <span
+          style={{
+            color: "var(--text-color)",
+            userSelect: "none",
+            width: "120px",
+            textAlign: "center",
+          }}
+        >
+          {options.first} - {options.last} dari {options.totalRecords}
+        </span>
+      );
+    },
+  };
+
+  const onCustomPage2 = (event:any) => {
+    setFirst2(event.first);
+    setRows2(event.rows);
+  };
 
   const formatDate = (date: any) => {
     var d = new Date(`${date}Z`),
@@ -138,7 +240,7 @@ export default function AttendancePage() {
     if (minute.length < 2) minute = '0' + minute
     if (second.length < 2) second = '0' + second
 
-    return `${[day, month, year].join('-')}   ${[hour, minute, second].join(':')}`
+    return `${[day, month, year].join('-')} | ${[hour, minute, second].join(':')}`
   }
 
   return (
@@ -149,24 +251,17 @@ export default function AttendancePage() {
         <KTCardBody>
           <DataTable
             responsiveLayout='scroll'
-            value={loading ? dummy : attendance.att.reverse()}
+            value={loading ? dummy : attendance.att}
             className='display w-150 datatable-wrapper'
-            // showGridlines
-            // dataKey='id'
             rowHover
-
-            // header={renderHeader}
-            // filters={filters1}
-            // globalFilterFields={['code', 'name', 'desc']}
-            // emptyMessage='Tidak ada data'
-            // paginator
-            // paginatorTemplate={template2}
-            // first={first2}
-            // rows={rows2}
-            // onPage={onCustomPage2}
-            // paginatorClassName='justify-content-end mt-3'
-            // selectionMode='single'
-            // onRowSelect={onRowSelect}
+            filters={filters}
+            globalFilterFields={['uid.username', 'uid.email']}
+            paginator
+            paginatorTemplate={template2}
+            first={first2}
+            rows={rows2}
+            onPage={onCustomPage2}
+            paginatorClassName='justify-content-end mt-3'
           >
             <Column
               header='EMPLOYEE'
@@ -237,7 +332,13 @@ export default function AttendancePage() {
                 loading ? (
                   <Skeleton />
                 ) : (
-                  <div>{e.in_location ? 'In Location' : 'Not In Location'}</div>
+                  <div>
+                    {e.in_location ? (
+                      <span className='badge badge-light-info'>In Location</span>
+                    ) : (
+                      <span className='badge badge-light-danger'>Not in Location</span>
+                    )}
+                  </div>
                 )
               }
             />
@@ -250,11 +351,136 @@ export default function AttendancePage() {
                 borderStyle: 'dashed',
                 borderColor: '#eff2f5',
               }}
-              body={(e) => (loading ? <Skeleton /> : actionBody(e))}
+              body={(e) => {
+                return loading ? <Skeleton /> : actionBody(e)
+              }}
             />
           </DataTable>
         </KTCardBody>
       </KTCard>
+      <Dialog
+        header={'Attendance Detail'}
+        visible={displayDetail}
+        style={{width: '40vw'}}
+        footer={() => <></>}
+        onHide={() => {
+          setDisplayDetail(false)
+        }}
+      >
+        <div className='row ml-0 mt-3'>
+          <div className='col-4'>
+            <Timeline
+              value={[
+                {
+                  label: 'Checkin',
+                  time: attendance?.current?.date_checkin
+                    ? formatDate(attendance?.current?.date_checkin)
+                    : '-',
+                  action: () => {
+                    setDetailLocation({
+                      ...attendance?.current?.location_in,
+                      image: attendance?.current?.image_in,
+                    })
+                  },
+                },
+                {
+                  label: 'Breakout',
+                  time: attendance?.current?.break_out
+                    ? formatDate(attendance?.current?.break_out)
+                    : '-',
+                  action: () => {
+                    setDetailLocation({
+                      ...attendance?.current?.break_location_out,
+                      image: attendance?.current?.break_image_out,
+                    })
+                  },
+                },
+                {
+                  label: 'Breakin',
+                  time: attendance?.current?.break_in
+                    ? formatDate(attendance?.current?.break_in)
+                    : '-',
+                  action: () => {
+                    setDetailLocation({
+                      ...attendance?.current?.break_location_in,
+                      image: attendance?.current?.break_image_in,
+                    })
+                  },
+                },
+                {
+                  label: 'Checkout',
+                  time: attendance?.current?.date_checkout
+                    ? formatDate(attendance?.current?.date_checkout)
+                    : '-',
+                  action: () => {
+                    setDetailLocation({
+                      ...attendance?.current?.location_out,
+                      image: attendance?.current?.image_out,
+                    })
+                  },
+                },
+              ]}
+              content={(item: any) => {
+                return (
+                  <>
+                    {item.time !== '-' ? (
+                      <Link
+                        to={''}
+                        onClick={() => {
+                          item.action()
+                        }}
+                      >
+                        <div className='text-gray-800 fs-14 font-w700'>{item.label}</div>
+                      </Link>
+                    ) : (
+                      <div className='text-gray-800 fs-14 font-w700'>{item.label}</div>
+                    )}
+                    <div className='text-gray-600'>{item.time}</div>
+                  </>
+                )
+              }}
+            />
+          </div>
+          <div className='col-8'>
+            <div className='row'>
+              <div className='row align-items-center'>
+                <div style={{width: '120px'}}>
+                  <div
+                    className='symbol symbol-100px'
+                    style={{borderStyle: 'dashed', borderColor: '#eff2f5'}}
+                  >
+                    <img alt='Pic' src={`${endpoints.image.endpoint}${detailLocation?.image}`} />
+                  </div>
+                </div>
+
+                <div className='col-6'>
+                  <div className='text-gray-800 fs-14 font-w700'>
+                    {attendance?.current?.uid.username}
+                  </div>
+                  <div className='text-gray-600'>{attendance?.current?.uid.email}</div>
+                  <div className='mt-3'>
+                    {attendance?.current?.in_location ? (
+                      <span className='badge badge-light-info'>In Location</span>
+                    ) : (
+                      <span className='badge badge-light-danger'>Not in Location</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className='col-6 mt-6'>
+                <div className='text-gray-800 fs-14 font-w700'>Location</div>
+                <div className='text-gray-600'>{detailLocation?.address ?? ''}</div>
+              </div>
+              <div className='col-6 mt-6'>
+                <div className='text-gray-800 fs-14 font-w700'>Distance</div>
+                <div className='text-gray-600'>
+                  {detailLocation?.distance.toFixed(2) ?? ''} Km from Location
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Dialog>
     </>
   )
 }

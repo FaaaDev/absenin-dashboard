@@ -19,6 +19,12 @@ const endpoints = {
       method: "GET",
       data: {},
     },
+
+    getAttendanceDetail: {
+      endpoint: "/v1/api/attendance/",
+      method: "GET",
+      data: {},
+    },
 }
 
 export default endpoints;

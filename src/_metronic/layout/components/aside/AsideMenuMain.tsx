@@ -23,6 +23,12 @@ export function AsideMenuMain() {
         </div>
       </div>
       <AsideMenuItem
+        to='/employee'
+        icon='/media/icons/duotune/general/gen049.svg'
+        title={"Employee"}
+        fontIcon='bi-app-indicator'
+      />
+      <AsideMenuItem
         to='/attendance'
         icon='/media/icons/duotune/general/gen013.svg'
         title={"Attendance"}

@@ -23,7 +23,7 @@ const AppRoutes: FC = () => {
   const {currentUser} = useAuth()
   const token = localStorage.getItem("token");
   return (
-    <HashRouter basename={PUBLIC_URL}>
+    <HashRouter basename="/">
       <Routes>
         <Route element={<App />}>
           <Route path='error/*' element={<ErrorsPage />} />

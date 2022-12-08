@@ -24,18 +24,82 @@ export function AsideMenuMain() {
       </div>
       <AsideMenuItem
         to='/employee'
-        icon='/media/icons/duotune/general/gen049.svg'
+        icon='/media/icons/duotune/coding/cod003.svg'
         title={"Employee"}
         fontIcon='bi-app-indicator'
       />
+      <AsideMenuItem
+        to='/contract'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Contract"}
+        fontIcon='bi-app-indicator'
+      />
+      <AsideMenuItem
+        to='/shift'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Shift"}
+        fontIcon='bi-app-indicator'
+      />
+      <div className='menu-item'>
+        <div className='menu-content pt-8 pb-2'>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Activity</span>
+        </div>
+      </div>
       <AsideMenuItem
         to='/attendance'
         icon='/media/icons/duotune/general/gen013.svg'
         title={"Attendance"}
         fontIcon='bi-app-indicator'
       />
-
+      <AsideMenuItem
+        to='/leave'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Leave"}
+        fontIcon='bi-app-indicator'
+      />
+      <AsideMenuItem
+        to='/sick'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Sick"}
+        fontIcon='bi-app-indicator'
+      />
+      <AsideMenuItem
+        to='/overtime'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Overtime"}
+        fontIcon='bi-app-indicator'
+      />
+      <AsideMenuItem
+        to='/bussiness-trip'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Bussiness Trip"}
+        fontIcon='bi-app-indicator'
+      />
       <div className='menu-item'>
+        <div className='menu-content pt-8 pb-2'>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Payroll</span>
+        </div>
+      </div>
+      <AsideMenuItem
+        to='/sallary-setting'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Sallary Setting"}
+        fontIcon='bi-app-indicator'
+      />
+      <AsideMenuItem
+        to='/sallary-proposal'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Sallary Proposal"}
+        fontIcon='bi-app-indicator'
+      />
+      <AsideMenuItem
+        to='/sallary-calculation'
+        icon='/media/icons/duotune/coding/cod003.svg'
+        title={"Sallary Calculation"}
+        fontIcon='bi-app-indicator'
+      />
+
+      {/* <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
         </div>
@@ -124,7 +188,7 @@ export function AsideMenuMain() {
         icon='/media/icons/duotune/general/gen019.svg'
         title='Layout Builder'
         fontIcon='bi-layers'
-      />
+      /> */}
       <div className='menu-item'>
         <div className='menu-content'>
           <div className='separator mx-1 my-4'></div>

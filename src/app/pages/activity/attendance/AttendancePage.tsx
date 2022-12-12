@@ -14,6 +14,7 @@ import {Timeline} from 'primereact/timeline'
 import {Link} from 'react-router-dom'
 import {FilterMatchMode} from 'primereact/api'
 import { Dropdown } from "primereact/dropdown";
+import { InputText } from 'primereact/inputtext'
 
 export default function AttendancePage() {
   const [loading, setLoading] = useState(false)
@@ -28,25 +29,7 @@ export default function AttendancePage() {
   const attendance: any = useSelector((state: any) => state.attendance)
   const dummy = Array.from({length: 10})
   const menu = useRef<any>(null)
-  const items = [
-    {
-      label: 'Detail',
-      icon: 'pi pi-external-link',
-      command: () => {
-        setDisplayDetail(true)
-      },
-    },
-    {
-      label: 'Edit',
-      icon: 'pi pi-pencil',
-      command: () => {},
-    },
-    {
-      label: 'Delete',
-      icon: 'pi pi-trash',
-      command: () => {},
-    },
-  ]
+
 
   useEffect(() => {
     getAttendance()
@@ -115,24 +98,12 @@ export default function AttendancePage() {
 
   const header = () => {
     return (
-      <div className='card-header border-0 pt-6'>
+      <div className='card-header border-0 mt-5'>
         <div className='card-title'>
-          {/* begin::Search */}
-          <div className='d-flex align-items-center position-relative my-1'>
-            <KTSVG
-              path='/media/icons/duotune/general/gen021.svg'
-              className='svg-icon-1 position-absolute ms-6'
-            />
-            <input
-              type='text'
-              data-kt-user-table-filter='search'
-              className='form-control form-control-solid w-250px ps-14'
-              placeholder='Search Employee'
-              value={globalFilter}
-              onChange={onGlobalFilterChange}
-            />
-          </div>
-          {/* end::Search */}
+          <span className='p-input-icon-left'>
+            <i className='pi pi-search' />
+            <InputText value={globalFilter} onChange={onGlobalFilterChange} placeholder='Search Attendance' />
+          </span>
         </div>
       </div>
     )
@@ -256,7 +227,7 @@ export default function AttendancePage() {
             rowHover
             filters={filters}
             globalFilterFields={['uid.username', 'uid.email']}
-            paginator
+            paginator={attendance?.att?.length > rows2/2}
             paginatorTemplate={template2}
             first={first2}
             rows={rows2}

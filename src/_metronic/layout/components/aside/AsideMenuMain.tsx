@@ -24,7 +24,7 @@ export function AsideMenuMain() {
       </div>
       <AsideMenuItem
         to='/employee'
-        icon='/media/icons/duotune/coding/cod003.svg'
+        icon='/media/icons/duotune/general/gen049.svg'
         title={"Employee"}
         fontIcon='bi-app-indicator'
       />
@@ -36,7 +36,7 @@ export function AsideMenuMain() {
       />
       <AsideMenuItem
         to='/shift'
-        icon='/media/icons/duotune/coding/cod003.svg'
+        icon='/media/icons/duotune/maps/map009.svg'
         title={"Shift"}
         fontIcon='bi-app-indicator'
       />

@@ -25,6 +25,24 @@ const endpoints = {
       method: "GET",
       data: {},
     },
+
+    getUser: {
+      endpoint: "/v1/api/user",
+      method: "GET",
+      data: {},
+    },
+
+    getShift: {
+      endpoint: "/v1/api/shift",
+      method: "GET",
+      data: {},
+    },
+
+    addShift: {
+      endpoint: "/v1/api/shift",
+      method: "POST",
+      data: {},
+    },
 }
 
 export default endpoints;

@@ -191,14 +191,11 @@ export default function ShiftPage() {
         <Menu
           model={[
             {
-              label: 'Detail',
-              icon: 'pi pi-external-link',
-              command: () => {},
-            },
-            {
               label: 'Edit',
               icon: 'pi pi-pencil',
-              command: () => {},
+              command: () => {
+                navigate('/shift/edit')
+              },
             },
             {
               label: 'Delete',
@@ -217,6 +214,7 @@ export default function ShiftPage() {
           iconPos='right'
           onClick={(event) => {
             menu.current.toggle(event)
+            dispatch({type: SET_DETAIL_SHIFT, payload: {...data, timezone: data.schedule[0].timezone}})
           }}
         />
       </>

@@ -50,6 +50,22 @@ const PrivateRoutes = () => {
               />
             }
           />
+          <Route
+            path='shift/edit'
+            element={
+              <AddShiftPage
+                isEdit={true}
+                onSuccess={() => {
+                  toast.current.show({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Data Successfully updated',
+                    life: 3000,
+                  })
+                }}
+              />
+            }
+          />
           {/* Lazy Modules */}
           <Route
             path='crafted/pages/profile/*'

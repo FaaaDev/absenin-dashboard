@@ -43,6 +43,12 @@ const endpoints = {
       method: "POST",
       data: {},
     },
+
+    updateShift: {
+      endpoint: "/v1/api/shift/",
+      method: "PUT",
+      data: {},
+    },
 }
 
 export default endpoints;

@@ -12,7 +12,7 @@ import {Button} from 'primereact/button'
 import {endpoints, request} from '../../../../utils'
 import {Toast} from 'primereact/toast'
 
-export default function AddShiftPage({onSuccess}: any) {
+export default function AddShiftPage({isEdit = false, onSuccess}: any) {
   const shift: any = useSelector((state: any) => state.shift)
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
@@ -22,6 +22,49 @@ export default function AddShiftPage({onSuccess}: any) {
     setLoading(true)
     const config = {
       ...endpoints.addShift,
+      data: {
+        ...shift.current,
+        timezone: shift.current.timezone ? Number(shift.current.timezone) : 0,
+        schedule: shift.current.schedule.map((v: any) => ({
+          ...v,
+          check_in_s: v.check_in_s ?? null,
+          check_in_e: v.check_in_e ?? null,
+          break_out_s: v.break_out_s ?? null,
+          break_out_e: v.break_out_e ?? null,
+          break_in_s: v.break_in_s ?? null,
+          break_in_e: v.break_in_e ?? null,
+          check_out_s: v.check_out_s ?? null,
+          check_out_e: v.check_out_e ?? null,
+        })),
+      },
+    }
+
+    let response: any = null
+    try {
+      response = await request(null, config)
+      console.log(response)
+      if (response.status) {
+        onSuccess()
+        window.history.back()
+      }
+    } catch (error) {
+      setTimeout(() => {
+        setLoading(false)
+        toast.current.show({
+          severity: 'error',
+          summary: 'Failed',
+          detail: 'Data update is failed!',
+          life: 3000,
+        })
+      }, 500)
+    }
+  }
+
+  const updShift = async () => {
+    setLoading(true)
+    const config = {
+      ...endpoints.updateShift,
+      endpoint: endpoints.updateShift.endpoint+shift.current.id,
       data: {
         ...shift.current,
         timezone: shift.current.timezone ? Number(shift.current.timezone) : 0,
@@ -106,7 +149,7 @@ export default function AddShiftPage({onSuccess}: any) {
           },
         ]}
       >
-        Add Shift
+        {isEdit ? 'Edit Shift' : 'Add Shift'}
       </PageTitle>
       <KTCard>
         <KTCardBody>
@@ -129,6 +172,16 @@ export default function AddShiftPage({onSuccess}: any) {
                 value={shift?.current?.timezone ?? null}
                 onChange={(e: any) => {
                   updateShift({...shift.current, timezone: e.target.value})
+                }}
+              />
+            </div>
+            <div className='col-3'>
+            <PrimeInputText
+                label={'Pin Location'}
+                placeholder={'Latitude,Longitude'}
+                value={shift?.current?.pin_location ?? null}
+                onChange={(e: any) => {
+                  updateShift({...shift.current, pin_location: e.target.value})
                 }}
               />
             </div>
@@ -333,7 +386,7 @@ export default function AddShiftPage({onSuccess}: any) {
               icon={'pi pi-check'}
               className={`p-button-sm`}
               loading={loading}
-              onClick={() => addShift()}
+              onClick={() => isEdit ? updShift() : addShift()}
             />
           </div>
         </KTCardBody>

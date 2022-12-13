@@ -430,7 +430,7 @@ export default function AttendancePage() {
                   </div>
                   <div className='text-gray-600'>{attendance?.current?.uid.email}</div>
                   <div className='mt-3'>
-                    {attendance?.current?.in_location ? (
+                    {detailLocation?.in_location ? (
                       <span className='badge badge-light-info'>In Location</span>
                     ) : (
                       <span className='badge badge-light-danger'>Not in Location</span>

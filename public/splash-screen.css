@@ -16,6 +16,7 @@ body {
 }
 
 .splash-screen img {
+  width: 100px;
   margin-left: calc(100vw - 100%);
   margin-bottom: 30px;
 }

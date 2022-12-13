@@ -17,7 +17,7 @@ import {App} from '../App'
  *
  * @see https://facebook.github.io/create-react-app/docs/using-the-public-folder
  */
-const {PUBLIC_URL} = process.env
+const {PUBLIC_URL} = import.meta.env
 
 const AppRoutes: FC = () => {
   const {currentUser} = useAuth()

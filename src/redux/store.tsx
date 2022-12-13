@@ -5,7 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import logger from "redux-logger";
 
 let middleware:any = [ReduxThunk];
-if (process.env.REACT_APP_ENVIRONTMENT !== "production") {
+if (import.meta.env.VITE_APP_ENVIRONTMENT !== "production") {
   middleware = [...middleware, logger];
 }
 

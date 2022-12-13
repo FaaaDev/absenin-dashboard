@@ -39,7 +39,7 @@ label.rating-label {
   }
 }
 
-.rating-input:checked ~ .rating-label {
+.rating-input:checked  .rating-label {
   & > i,
   & > .svg-icon {
     color: get($rating, color, default);
@@ -53,7 +53,7 @@ label.rating-label {
   }
 }
 
-label.rating-label:hover ~ .rating-label {
+label.rating-label:hover  .rating-label {
   & > i,
   & > .svg-icon {
     color: get($rating, color, default);

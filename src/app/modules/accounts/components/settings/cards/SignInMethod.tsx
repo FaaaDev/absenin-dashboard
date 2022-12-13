@@ -49,7 +49,7 @@ const SignInMethod: React.FC = () => {
     validationSchema: emailFormValidationSchema,
     onSubmit: (values) => {
       setLoading1(true)
-      setTimeout((values) => {
+      setTimeout((values:any) => {
         setEmailUpdateData(values)
         setLoading1(false)
         setShowEmailForm(false)
@@ -66,7 +66,7 @@ const SignInMethod: React.FC = () => {
     validationSchema: passwordFormValidationSchema,
     onSubmit: (values) => {
       setLoading2(true)
-      setTimeout((values) => {
+      setTimeout((values:any) => {
         setPasswordUpdateData(values)
         setLoading2(false)
         setPasswordForm(false)

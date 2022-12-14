@@ -9,9 +9,10 @@ import {Dropdown} from 'primereact/dropdown'
 import {Column} from 'primereact/column'
 import {Skeleton} from 'primereact/skeleton'
 import {endpoints, request} from '../../../../utils'
-import { useDispatch, useSelector } from 'react-redux'
-import { SET_EMP } from '../../../../redux/actions'
-import { InputText } from 'primereact/inputtext'
+import {useDispatch, useSelector} from 'react-redux'
+import {SET_EMP} from '../../../../redux/actions'
+import {InputText} from 'primereact/inputtext'
+import PrimeActionHeader from '../../../../components/PrimeActionHeader/PrimeActionHeader'
 
 export default function EmployeePage() {
   const [filters, setFilters]: any = useState(null)
@@ -71,8 +72,25 @@ export default function EmployeePage() {
         <div className='card-title'>
           <span className='p-input-icon-left'>
             <i className='pi pi-search' />
-            <InputText value={globalFilter} onChange={onGlobalFilterChange} placeholder='Search Employee' />
+            <InputText
+              value={globalFilter}
+              onChange={onGlobalFilterChange}
+              placeholder='Search Employee'
+            />
           </span>
+        </div>
+        <div className='card-toolbar'>
+          <div className='d-flex justify-content-end' data-kt-user-table-toolbar='base'>
+            <PrimeActionHeader
+              label={'Add Employee'}
+              icon='pi pi-plus'
+              otherAction
+              onClick={() => {
+                // dispatch({type: SET_DETAIL_SHIFT, payload: reset})
+                // navigate('/shift/add')
+              }}
+            />
+          </div>
         </div>
       </div>
     )
@@ -167,8 +185,8 @@ export default function EmployeePage() {
             className='display w-150 datatable-wrapper'
             rowHover
             filters={filters}
-            globalFilterFields={['uid.username', 'uid.email']}
-            paginator={employee?.list?.length > rows2/2}
+            globalFilterFields={['username', 'email']}
+            paginator={employee?.list?.length > rows2 / 2}
             paginatorTemplate={template2}
             first={first2}
             rows={rows2}
@@ -190,7 +208,10 @@ export default function EmployeePage() {
                   <div className='row'>
                     <div className='symbol-group symbol-hover' style={{width: '5rem'}}>
                       <div className='symbol symbol-35px symbol-circle'>
-                        <img alt='Pic' src={`${endpoints.image.endpoint}${e.image ? e.image : "thumb.jpg"}`} />
+                        <img
+                          alt='Pic'
+                          src={`${endpoints.image.endpoint}${e.image ? e.image : 'thumb.jpg'}`}
+                        />
                       </div>
                     </div>
                     <div className='col-6'>
@@ -209,7 +230,7 @@ export default function EmployeePage() {
                 borderStyle: 'dashed',
                 borderColor: '#eff2f5',
               }}
-              body={(e) => (loading ? <Skeleton /> : <div>{e?.phone ?? "-"}</div>)}
+              body={(e) => (loading ? <Skeleton /> : <div>{e?.phone ?? '-'}</div>)}
             />
             <Column
               header='DEPARTEMENT'

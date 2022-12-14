@@ -10,6 +10,7 @@ import EmployeePage from '../pages/employee/employee/EmployeePage'
 import ShiftPage from '../pages/employee/shift/ShiftPage'
 import AddShiftPage from '../pages/employee/shift/AddShiftPage'
 import {Toast} from 'primereact/toast'
+import AttendanceWrapper from '../pages/activity/attendance/AttendanceWrapper'
 
 const PrivateRoutes = () => {
   const BuilderPageWrapper = lazy(() => import('../pages/layout-builder/BuilderPageWrapper'))
@@ -32,7 +33,7 @@ const PrivateRoutes = () => {
           <Route path='dashboard' element={<DashboardWrapper />} />
           <Route path='builder' element={<BuilderPageWrapper />} />
           <Route path='menu-test' element={<MenuTestPage />} />
-          <Route path='attendance' element={<AttendancePage />} />
+          <Route path='attendance' element={<AttendanceWrapper />} />
           <Route path='employee' element={<EmployeePage />} />
           <Route path='shift' element={<ShiftPage />} />
           <Route

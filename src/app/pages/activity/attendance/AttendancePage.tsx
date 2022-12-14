@@ -13,8 +13,8 @@ import {Dialog} from 'primereact/dialog'
 import {Timeline} from 'primereact/timeline'
 import {Link} from 'react-router-dom'
 import {FilterMatchMode} from 'primereact/api'
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from 'primereact/inputtext'
+import {Dropdown} from 'primereact/dropdown'
+import {InputText} from 'primereact/inputtext'
 
 export default function AttendancePage() {
   const [loading, setLoading] = useState(false)
@@ -23,13 +23,12 @@ export default function AttendancePage() {
   const [detailLocation, setDetailLocation]: any = useState(null)
   const [displayDetail, setDisplayDetail] = useState(false)
   const [filters, setFilters]: any = useState(null)
-  const [first2, setFirst2] = useState(0);
-  const [rows2, setRows2] = useState(20);
+  const [first2, setFirst2] = useState(0)
+  const [rows2, setRows2] = useState(20)
   const dispatch = useDispatch()
   const attendance: any = useSelector((state: any) => state.attendance)
   const dummy = Array.from({length: 10})
   const menu = useRef<any>(null)
-
 
   useEffect(() => {
     getAttendance()
@@ -98,14 +97,14 @@ export default function AttendancePage() {
 
   const header = () => {
     return (
-      <div className='card-header border-0 mt-5'>
-        <div className='card-title'>
-          <span className='p-input-icon-left'>
-            <i className='pi pi-search' />
-            <InputText value={globalFilter} onChange={onGlobalFilterChange} placeholder='Search Attendance' />
-          </span>
-        </div>
-      </div>
+      <span className='p-input-icon-left mb-6 mt-5'>
+        <i className='pi pi-search' />
+        <InputText
+          value={globalFilter}
+          onChange={onGlobalFilterChange}
+          placeholder='Search Attendance'
+        />
+      </span>
     )
   }
 
@@ -151,50 +150,43 @@ export default function AttendancePage() {
   }
 
   const template2 = {
-    layout: "RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink",
-    RowsPerPageDropdown: (options:any) => {
+    layout: 'RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink',
+    RowsPerPageDropdown: (options: any) => {
       const dropdownOptions = [
-        { label: 20, value: 20 },
-        { label: 50, value: 50 },
-        { label: "Semua", value: options.totalRecords },
-      ];
+        {label: 20, value: 20},
+        {label: 50, value: 50},
+        {label: 'Semua', value: options.totalRecords},
+      ]
 
       return (
         <React.Fragment>
-          <span
-            className="mx-1"
-            style={{ color: "var(--text-color)", userSelect: "none" }}
-          >
-            Data per halaman:{" "}
+          <span className='mx-1' style={{color: 'var(--text-color)', userSelect: 'none'}}>
+            Data per halaman:{' '}
           </span>
-          <Dropdown
-            value={options.value}
-            options={dropdownOptions}
-            onChange={options.onChange}
-          />
+          <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} />
         </React.Fragment>
-      );
+      )
     },
-    CurrentPageReport: (options:any) => {
+    CurrentPageReport: (options: any) => {
       return (
         <span
           style={{
-            color: "var(--text-color)",
-            userSelect: "none",
-            width: "120px",
-            textAlign: "center",
+            color: 'var(--text-color)',
+            userSelect: 'none',
+            width: '120px',
+            textAlign: 'center',
           }}
         >
           {options.first} - {options.last} dari {options.totalRecords}
         </span>
-      );
+      )
     },
-  };
+  }
 
-  const onCustomPage2 = (event:any) => {
-    setFirst2(event.first);
-    setRows2(event.rows);
-  };
+  const onCustomPage2 = (event: any) => {
+    setFirst2(event.first)
+    setRows2(event.rows)
+  }
 
   const formatDate = (date: any) => {
     var d = new Date(`${date}Z`),
@@ -216,119 +208,114 @@ export default function AttendancePage() {
 
   return (
     <>
-      <PageTitle breadcrumbs={[]}>Attendances</PageTitle>
-      <KTCard>
-        {header()}
-        <KTCardBody>
-          <DataTable
-            responsiveLayout='scroll'
-            value={loading ? dummy : attendance.att}
-            className='display w-150 datatable-wrapper'
-            rowHover
-            filters={filters}
-            globalFilterFields={['uid.username', 'uid.email']}
-            paginator={attendance?.att?.length > rows2/2}
-            paginatorTemplate={template2}
-            first={first2}
-            rows={rows2}
-            onPage={onCustomPage2}
-            paginatorClassName='justify-content-end mt-3'
-          >
-            <Column
-              header='EMPLOYEE'
-              headerStyle={{color: '#7e8299', background: 'transparent'}}
-              style={{
-                width: 'auto',
-                borderStyle: 'dashed',
-                borderColor: '#eff2f5',
-              }}
-              body={(e) => {
-                return loading ? (
-                  <Skeleton />
-                ) : (
-                  <div className='row'>
-                    <div className='symbol-group symbol-hover' style={{width: '7rem'}}>
-                      <div className='symbol symbol-35px symbol-circle'>
-                        <img alt='Pic' src={`${endpoints.image.endpoint}${e.image_in}`} />
-                      </div>
-                      {e.image_out && (
-                        <div className='symbol symbol-35px symbol-circle'>
-                          <img alt='Pic' src={`${endpoints.image.endpoint}${e.image_out}`} />
-                        </div>
-                      )}
-                    </div>
-                    <div className='col-6'>
-                      <div className='text-gray-800 fs-14 font-w700'>{e.uid.username}</div>
-                      <div className='text-gray-600'>{e.uid.email}</div>
-                    </div>
+      {header()}
+      <DataTable
+        responsiveLayout='scroll'
+        value={loading ? dummy : attendance.att}
+        className='display w-150 datatable-wrapper'
+        rowHover
+        filters={filters}
+        globalFilterFields={['uid.username', 'uid.email']}
+        paginator={attendance?.att?.length > rows2 / 2}
+        paginatorTemplate={template2}
+        first={first2}
+        rows={rows2}
+        onPage={onCustomPage2}
+        paginatorClassName='justify-content-end mt-3'
+      >
+        <Column
+          header='EMPLOYEE'
+          headerStyle={{color: '#7e8299', background: 'transparent'}}
+          style={{
+            width: 'auto',
+            borderStyle: 'dashed',
+            borderColor: '#eff2f5',
+          }}
+          body={(e) => {
+            return loading ? (
+              <Skeleton />
+            ) : (
+              <div className='row'>
+                <div className='symbol-group symbol-hover' style={{width: '7rem'}}>
+                  <div className='symbol symbol-35px symbol-circle'>
+                    <img alt='Pic' src={`${endpoints.image.endpoint}${e.image_in}`} />
                   </div>
-                )
-              }}
-            />
-            <Column
-              header='CHECK IN'
-              headerStyle={{color: '#7e8299', background: 'transparent'}}
-              style={{
-                width: '20rem',
-                borderStyle: 'dashed',
-                borderColor: '#eff2f5',
-              }}
-              body={(e) => (loading ? <Skeleton /> : <div>{formatDate(e.date_checkin)}</div>)}
-            />
-            <Column
-              header='CHECK OUT'
-              headerStyle={{color: '#7e8299', background: 'transparent'}}
-              style={{
-                width: '20rem',
-                borderStyle: 'dashed',
-                borderColor: '#eff2f5',
-              }}
-              body={(e) =>
-                loading ? (
-                  <Skeleton />
+                  {e.image_out && (
+                    <div className='symbol symbol-35px symbol-circle'>
+                      <img alt='Pic' src={`${endpoints.image.endpoint}${e.image_out}`} />
+                    </div>
+                  )}
+                </div>
+                <div className='col-6'>
+                  <div className='text-gray-800 fs-14 font-w700'>{e.uid.username}</div>
+                  <div className='text-gray-600'>{e.uid.email}</div>
+                </div>
+              </div>
+            )
+          }}
+        />
+        <Column
+          header='CHECK IN'
+          headerStyle={{color: '#7e8299', background: 'transparent'}}
+          style={{
+            width: '20rem',
+            borderStyle: 'dashed',
+            borderColor: '#eff2f5',
+          }}
+          body={(e) => (loading ? <Skeleton /> : <div>{formatDate(e.date_checkin)}</div>)}
+        />
+        <Column
+          header='CHECK OUT'
+          headerStyle={{color: '#7e8299', background: 'transparent'}}
+          style={{
+            width: '20rem',
+            borderStyle: 'dashed',
+            borderColor: '#eff2f5',
+          }}
+          body={(e) =>
+            loading ? (
+              <Skeleton />
+            ) : (
+              <div>{e.date_checkout ? formatDate(e.date_checkout) : '-'}</div>
+            )
+          }
+        />
+        <Column
+          header='STATUS'
+          headerStyle={{color: '#7e8299', background: 'transparent'}}
+          style={{
+            width: 'auto',
+            borderStyle: 'dashed',
+            borderColor: '#eff2f5',
+          }}
+          body={(e) =>
+            loading ? (
+              <Skeleton />
+            ) : (
+              <div>
+                {e.in_location ? (
+                  <span className='badge badge-light-info'>In Location</span>
                 ) : (
-                  <div>{e.date_checkout ? formatDate(e.date_checkout) : '-'}</div>
-                )
-              }
-            />
-            <Column
-              header='STATUS'
-              headerStyle={{color: '#7e8299', background: 'transparent'}}
-              style={{
-                width: 'auto',
-                borderStyle: 'dashed',
-                borderColor: '#eff2f5',
-              }}
-              body={(e) =>
-                loading ? (
-                  <Skeleton />
-                ) : (
-                  <div>
-                    {e.in_location ? (
-                      <span className='badge badge-light-info'>In Location</span>
-                    ) : (
-                      <span className='badge badge-light-danger'>Not in Location</span>
-                    )}
-                  </div>
-                )
-              }
-            />
-            <Column
-              header='ACTION'
-              headerStyle={{color: '#7e8299', background: 'transparent'}}
-              // className={"text-right"}
-              style={{
-                width: '8rem',
-                borderStyle: 'dashed',
-                borderColor: '#eff2f5',
-              }}
-              body={(e) => {
-                return loading ? <Skeleton /> : actionBody(e)
-              }}
-            />
-          </DataTable>
-        </KTCardBody>
-      </KTCard>
+                  <span className='badge badge-light-danger'>Not in Location</span>
+                )}
+              </div>
+            )
+          }
+        />
+        <Column
+          header='ACTION'
+          headerStyle={{color: '#7e8299', background: 'transparent'}}
+          // className={"text-right"}
+          style={{
+            width: '8rem',
+            borderStyle: 'dashed',
+            borderColor: '#eff2f5',
+          }}
+          body={(e) => {
+            return loading ? <Skeleton /> : actionBody(e)
+          }}
+        />
+      </DataTable>
       <Dialog
         header={'Attendance Detail'}
         visible={displayDetail}

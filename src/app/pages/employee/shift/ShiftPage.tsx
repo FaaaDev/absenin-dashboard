@@ -15,6 +15,8 @@ import getDay from '../../../../utils/getday'
 import PrimeActionHeader from '../../../../components/PrimeActionHeader/PrimeActionHeader'
 import {useNavigate} from 'react-router-dom'
 import {InputText} from 'primereact/inputtext'
+import DeleteDialog from '../../../../components/DeleteDialog/DeleteDialog'
+import { Toast } from 'primereact/toast'
 
 const reset = {
   id: null,
@@ -108,11 +110,14 @@ export default function ShiftPage() {
   const menu = useRef<any>(null)
   const [globalFilter, setGlobalFilter] = useState('')
   const [loading, setLoading] = useState(false)
+  const [loadingDelete, setLoadingDelete] = useState(false)
+  const [displayDelete, setDisplayDelete] = useState(false)
   const dispatch = useDispatch()
   const dummy = Array.from({length: 10})
   const shift: any = useSelector((state: any) => state.shift)
   const [expandedRows, setExpandedRows]: any = useState(null)
   const navigate = useNavigate()
+  const toast = useRef<any>(null)
 
   useEffect(() => {
     getShift()
@@ -138,6 +143,41 @@ export default function ShiftPage() {
     setTimeout(() => {
       setLoading(false)
     }, 500)
+  }
+
+  const deletShift = async () => {
+    setLoadingDelete(true)
+    const config = {
+      ...endpoints.deleteShift,
+      endpoint: endpoints.deleteShift.endpoint+shift.current.id,
+    }
+
+    let response: any = null
+    try {
+      response = await request(null, config)
+      console.log(response)
+      if (response.status) {
+        setLoadingDelete(false)
+        setDisplayDelete(false)
+        getShift();
+        toast.current.show({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Data Successfully deleted',
+          life: 3000,
+        })
+      }
+    } catch (error) {
+      setTimeout(() => {
+        setLoadingDelete(false)
+        toast.current.show({
+          severity: 'error',
+          summary: 'Failed',
+          detail: 'Data update is failed!',
+          life: 3000,
+        })
+      }, 500)
+    }
   }
 
   const onGlobalFilterChange = (e: any) => {
@@ -200,7 +240,9 @@ export default function ShiftPage() {
             {
               label: 'Delete',
               icon: 'pi pi-trash',
-              command: () => {},
+              command: () => {
+                setDisplayDelete(true)
+              },
             },
           ]}
           popup
@@ -214,7 +256,10 @@ export default function ShiftPage() {
           iconPos='right'
           onClick={(event) => {
             menu.current.toggle(event)
-            dispatch({type: SET_DETAIL_SHIFT, payload: {...data, timezone: data.schedule[0].timezone}})
+            dispatch({
+              type: SET_DETAIL_SHIFT,
+              payload: {...data, timezone: data.schedule[0].timezone},
+            })
           }}
         />
       </>
@@ -335,6 +380,7 @@ export default function ShiftPage() {
 
   return (
     <>
+      <Toast ref={toast} />
       <PageTitle breadcrumbs={[]}>Shift</PageTitle>
       <KTCard>
         {header()}
@@ -345,7 +391,7 @@ export default function ShiftPage() {
             className='display w-150 datatable-wrapper'
             rowHover
             filters={filters}
-            globalFilterFields={['uid.username', 'uid.email']}
+            globalFilterFields={['shift_name']}
             paginator={shift?.list?.length > rows2 / 2}
             paginatorTemplate={template2}
             first={first2}
@@ -402,6 +448,16 @@ export default function ShiftPage() {
           </DataTable>
         </KTCardBody>
       </KTCard>
+      <DeleteDialog
+        display={displayDelete}
+        onConfirm={() => {
+          deletShift()
+        }}
+        onCancel={() => {
+          setDisplayDelete(false)
+        }}
+        loading={loadingDelete}
+      />
     </>
   )
 }

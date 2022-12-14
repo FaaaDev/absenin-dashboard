@@ -49,6 +49,12 @@ const endpoints = {
       method: "PUT",
       data: {},
     },
+
+    deleteShift: {
+      endpoint: "/v1/api/shift/",
+      method: "DELETE",
+      data: {},
+    },
 }
 
 export default endpoints;

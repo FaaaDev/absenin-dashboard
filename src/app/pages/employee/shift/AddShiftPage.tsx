@@ -64,7 +64,7 @@ export default function AddShiftPage({isEdit = false, onSuccess}: any) {
     setLoading(true)
     const config = {
       ...endpoints.updateShift,
-      endpoint: endpoints.updateShift.endpoint+shift.current.id,
+      endpoint: endpoints.updateShift.endpoint + shift.current.id,
       data: {
         ...shift.current,
         timezone: shift.current.timezone ? Number(shift.current.timezone) : 0,
@@ -176,7 +176,7 @@ export default function AddShiftPage({isEdit = false, onSuccess}: any) {
               />
             </div>
             <div className='col-3'>
-            <PrimeInputText
+              <PrimeInputText
                 label={'Pin Location'}
                 placeholder={'Latitude,Longitude'}
                 value={shift?.current?.pin_location ?? null}
@@ -386,7 +386,7 @@ export default function AddShiftPage({isEdit = false, onSuccess}: any) {
               icon={'pi pi-check'}
               className={`p-button-sm`}
               loading={loading}
-              onClick={() => isEdit ? updShift() : addShift()}
+              onClick={() => (isEdit ? updShift() : addShift())}
             />
           </div>
         </KTCardBody>

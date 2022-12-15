@@ -160,7 +160,7 @@
 }
 
 .p-tabview .p-tabview-nav li {
-    margin-right: 2rem;
+  margin-right: 2rem;
 }
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {
@@ -170,7 +170,7 @@
   background: transparent;
   color: #6c757d;
   padding: 1.25rem 0;
-  font-weight: normal; 
+  font-weight: normal;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
   transition: box-shadow 0.2s;
@@ -209,4 +209,9 @@
 .p-inputtext.light {
   border: 1px solid #eff2f5;
   background-color: #eff2f5;
+}
+
+.p-error i {
+  color: #e24c4c;
+  font-size: 0.875em;
 }

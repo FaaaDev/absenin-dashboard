@@ -1,7 +1,7 @@
-import {InputText} from 'primereact/inputtext'
+import { InputMask } from 'primereact/inputmask';
 import React from 'react'
 
-export default function PrimeInputText({
+export default function PrimeInputPhone({
   label,
   value,
   placeholder,
@@ -9,18 +9,17 @@ export default function PrimeInputText({
   disabled = false,
   error,
   errorMessage = "This field can't empty",
-  addOn,
 }: any) {
   return (
     <div>
       {<label className='text-label mb-2 fs-12'>{label}</label>}
       <div className='p-inputgroup'>
-        {addOn && <span className='p-inputgroup-addon'>{addOn}</span>}
-        <InputText
+        <InputMask
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           aria-describedby='name-error'
+          mask='9999 9999 9999'
           className={error ? 'p-invalid' : ''}
           disabled={disabled}
         />

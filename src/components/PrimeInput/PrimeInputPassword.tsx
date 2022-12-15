@@ -1,7 +1,7 @@
-import {InputText} from 'primereact/inputtext'
 import React from 'react'
+import {Password} from 'primereact/password'
 
-export default function PrimeInputText({
+export default function PrimeInputPassword({
   label,
   value,
   placeholder,
@@ -15,11 +15,12 @@ export default function PrimeInputText({
     <div>
       {<label className='text-label mb-2 fs-12'>{label}</label>}
       <div className='p-inputgroup'>
-        {addOn && <span className='p-inputgroup-addon'>{addOn}</span>}
-        <InputText
+        <Password
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          toggleMask
+          feedback={false}
           aria-describedby='name-error'
           className={error ? 'p-invalid' : ''}
           disabled={disabled}
